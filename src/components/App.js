@@ -109,107 +109,114 @@ export default function App() {
     }
 
     return (
-        <div className="py-4">
-            <div className="px-4">
-                <Card>
-                    <Card.Body>
-                        <Row>
-                            <Col md={6}>
-                                <h2>What is this?</h2>
-                                <hr/>
-                                <h5 className="my-4">
-                                    <span className="text-success">Media Map</span> is my idea for a deep learning
-                                    pipeline to combat media sensationalism. By assigning a score to each news article
-                                    using topics, associations, and sentiment, it is possible to filter out articles
-                                    with particularly loaded or inflammatory language.
-                                </h5>
-                                <h5 className="my-4">The following technologies are used in this algorithm:</h5>
-                                <ListGroup className="mb-5">
-                                    {technologies.map(([role, tools], i) => (
-                                        <ListGroup.Item key={i}>
-                                            <h6 className="mb-0">{role} <small
-                                                className="text-muted font-weight-light">| {tools.join(' / ')}</small>
-                                            </h6>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                            </Col>
-                            <Col md={6}>
-                                <h2>A few things to note:</h2>
-                                <hr/>
-                                <ListGroup className="my-4">
-                                    {notes.map((note, i) => (
-                                        <ListGroup.Item key={i}>
-                                            <h5 className="my-2">{note}</h5>
-                                        </ListGroup.Item>
-                                    ))}
-                                </ListGroup>
-                            </Col>
-                        </Row>
-                        <h3 className="text-center text-muted">
-                            Goal: reduce the prominence of fear-inducing articles in the top headlines for March 21st.
-                        </h3>
-                    </Card.Body>
-                </Card>
+        <>
+            <div className="bg-success text-center pt-2 pb-4 text-dark rounded-bottom" style={{letterSpacing: '.75em'}}>
+                <h1 className="display-2 mb-0">Media Map</h1>
             </div>
-            <hr/>
-            <div className="btn btn-lg btn-outline-success d-block py-3 m-4" onClick={() => setUnsorted(!unsorted)}>
-                Sorting by {unsorted ? 'Most Recent' : 'Algorithm Score'}
-            </div>
-            {[...articles].sort((a, b) => unsorted ? 0 : b.score - a.score).map((article, i) => (
-                <div key={i} className="px-4">
-                    <Card className="mb-4">
+            <div className="py-4">
+                <div className="px-4">
+                    <Card>
                         <Card.Body>
-                            <div className="px-4 clickable" onClick={() => window.open(article.url)}>
-                                <h4 className="mb-0 text-success float-right">
-                                    <span className="text-muted">Score:</span> {round(article.score)}
-                                </h4>
-                                <h4 className="mb-1">
-                                    <span>{article.source}</span> | <span
-                                    className="font-weight-bold">{article.title}</span>
-                                </h4>
-                            </div>
-                            <Row className="w-100">
+                            <Row>
                                 <Col md={6}>
+                                    <h2>What is this?</h2>
                                     <hr/>
-                                    {Object.entries(article.sentiment).map(([k, v]) => (
-                                        <h5 key={k}>{sentimentNames[k]}: {round(v)}</h5>
-                                    ))}
-                                    <h5>Direct: {round(article.insult_rating ** 2 * 100)}</h5>
-                                    <hr/>
-                                    <h6 style={{opacity: .9}}>
-                                        {article.entities.join(', ')}
-                                    </h6>
-                                    <div className="text-muted font-weight-lighter">
-                                        {article.concepts.filter(c => !article.entities.includes(c)).join(' ~ ')}
-                                    </div>
+                                    <h5 className="my-4">
+                                        <span className="text-success">Media Map</span> is my idea for a deep learning
+                                        pipeline to combat media sensationalism. By assigning a score to each news
+                                        article
+                                        using topics, associations, and sentiment, it is possible to filter out articles
+                                        with particularly loaded or inflammatory language.
+                                    </h5>
+                                    <h5 className="my-4">The following technologies are used in this algorithm:</h5>
+                                    <ListGroup className="mb-5">
+                                        {technologies.map(([role, tools], i) => (
+                                            <ListGroup.Item key={i}>
+                                                <h6 className="mb-0">{role} <small
+                                                    className="text-muted font-weight-light">| {tools.join(' / ')}</small>
+                                                </h6>
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
                                 </Col>
-                                <Col md={6} className="h-100">
+                                <Col md={6}>
+                                    <h2>A few things to note:</h2>
                                     <hr/>
-                                    <Button variant="outline-light" className="w-100"
-                                            onClick={() => setSelected(selected === article ? null : article)}>
-                                        {selected === article ? 'Hide' : 'Show'} Visualization
-                                    </Button>
-                                    <hr/>
-                                    {selected === article && (
-                                        <div className="bg-white w-100" style={{height: '80vh'}}>
-                                            {graphComponent(article)}
-                                        </div>
-                                    )}
-                                    {selected !== article && article.triples.map(([a, v, b], i) => (
-                                        <div key={i}>
-                                            <span className="text-danger">{a} </span>
-                                            <span className="text-muted">{v} </span>
-                                            <span className="text-info">{b}</span>
-                                        </div>
-                                    ))}
+                                    <ListGroup className="my-4">
+                                        {notes.map((note, i) => (
+                                            <ListGroup.Item key={i}>
+                                                <h5 className="my-2">{note}</h5>
+                                            </ListGroup.Item>
+                                        ))}
+                                    </ListGroup>
                                 </Col>
                             </Row>
+                            <h3 className="text-center text-muted">
+                                Goal: reduce the prominence of fear-inducing articles in the top headlines for March
+                                21st.
+                            </h3>
                         </Card.Body>
                     </Card>
-                    <hr/>
                 </div>
-            ))}
-        </div>
+                <hr/>
+                <div className="btn btn-lg btn-outline-success d-block py-3 m-4" onClick={() => setUnsorted(!unsorted)}>
+                    Sorting by {unsorted ? 'Most Recent' : 'Algorithm Score'}
+                </div>
+                {[...articles].sort((a, b) => unsorted ? 0 : b.score - a.score).map((article, i) => (
+                    <div key={i} className="px-4">
+                        <Card className="mb-4">
+                            <Card.Body>
+                                <div className="px-4 clickable" onClick={() => window.open(article.url)}>
+                                    <h4 className="mb-0 text-success float-right">
+                                        <span className="text-muted">Score:</span> {round(article.score)}
+                                    </h4>
+                                    <h4 className="mb-1">
+                                        <span>{article.source}</span> | <span
+                                        className="font-weight-bold">{article.title}</span>
+                                    </h4>
+                                </div>
+                                <Row className="w-100">
+                                    <Col md={6}>
+                                        <hr/>
+                                        {Object.entries(article.sentiment).map(([k, v]) => (
+                                            <h5 key={k}>{sentimentNames[k]}: {round(v)}</h5>
+                                        ))}
+                                        <h5>Direct: {round(article.insult_rating ** 2 * 100)}</h5>
+                                        <hr/>
+                                        <h6 style={{opacity: .9}}>
+                                            {article.entities.join(', ')}
+                                        </h6>
+                                        <div className="text-muted font-weight-lighter">
+                                            {article.concepts.filter(c => !article.entities.includes(c)).join(' ~ ')}
+                                        </div>
+                                    </Col>
+                                    <Col md={6} className="h-100">
+                                        <hr/>
+                                        <Button variant="outline-light" className="w-100"
+                                                onClick={() => setSelected(selected === article ? null : article)}>
+                                            {selected === article ? 'Hide' : 'Show'} Visualization
+                                        </Button>
+                                        <hr/>
+                                        {selected === article && (
+                                            <div className="bg-white w-100" style={{height: '80vh'}}>
+                                                {graphComponent(article)}
+                                            </div>
+                                        )}
+                                        {selected !== article && article.triples.map(([a, v, b], i) => (
+                                            <div key={i}>
+                                                <span className="text-danger">{a} </span>
+                                                <span className="text-muted">{v} </span>
+                                                <span className="text-info">{b}</span>
+                                            </div>
+                                        ))}
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                        <hr/>
+                    </div>
+                ))}
+            </div>
+        </>
     );
 };
